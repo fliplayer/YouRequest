@@ -1,10 +1,45 @@
+<!DOCTYPE html>
 <html lang="en" data-ng-app="YouRequest">
 	<head>
 		<meta charset="UTF-8">
 		<title>YouRequest</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<link rel="stylesheet" media="screen" href="http://netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 	</head>
-	<body>
+	<body data-ng-controller="YRCtrl">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+					YouRequest
+					<form id="search" data-ng-submit="search()">
+						<input id="query" type="text" placeholder="Search video..." data-ng-model="query">
+						<input id="submit" type="image" src="search.png" alt="Search">
+					</form>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-6">
+					<div class="row">
+						<div class="col-md-12" id="player">
+							<div id="placeholder" style="width: 100%"></div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+							sd
+						</div>
+					</div>
+				</div>
+				<div class="col-md-6">
+					<div class="video" data-ng-repeat="video in results" data-ng-click="queue(video.id, video.title)">
+				        <img class="video-image" data-ng-src="{{ video.thumbnail }}">
+				        <p class="video-title">{{ video.title }}</p>
+				        <p class="video-author">{{ video.author }}</p>
+				        <p class="video-description">{{ video.description }}</p>
+			      	</div>
+				</div>
+			</div>
+		</div>
 		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
 		<script type="text/javascript" src="app.js"></script>
 	</body>
