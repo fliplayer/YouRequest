@@ -58,7 +58,6 @@ app.service('YTService', ['$window', '$rootScope', '$log', function ($window, $r
   }
 
   this.bindPlayer = function (elementId) {
-    $log.info('Binding to ' + elementId);
     youtube.playerId = elementId;
   };
 
@@ -117,6 +116,15 @@ app.service('YTService', ['$window', '$rootScope', '$log', function ($window, $r
     return playlist;
   }
 
+  this.clearPlaylist = function() {
+    playlist.splice(0,playlist.length);
+    return playlist;
+  }
+
+  this.removeVid = function(index) {
+    playlist.splice(index,1);
+  }
+
 	this.getYoutube = function () {
   	return youtube;
 	};
@@ -149,7 +157,7 @@ app.controller('YRCtrl', function ($scope, $http, $log, YTService) {
         params: {
           key: 'AIzaSyDVQpYlJfj0jKbGCy2TFvi9Le4zRZrzmSs',
           type: 'video',
-          maxResults: '10',
+          maxResults: '15',
           part: 'id,snippet',
           fields: 'items/id,items/snippet/title,items/snippet/description,items/snippet/thumbnails/default,items/snippet/channelTitle',
           q: this.query
@@ -157,7 +165,6 @@ app.controller('YRCtrl', function ($scope, $http, $log, YTService) {
       })
       .success( function (data) {
         YTService.listResults(data);
-        $log.info(data);
       })
       .error( function () {
       	$log.info('Search error');
@@ -171,6 +178,14 @@ app.controller('YRCtrl', function ($scope, $http, $log, YTService) {
     $scope.play = function(id, title, index) {
       YTService.launchPlayer(id, title, index);
       $scope.videotitle = YTService.getTitle();
+    }
+
+    $scope.clearList = function() {
+      YTService.clearPlaylist();
+    }
+
+    $scope.removeVideo = function(index) {
+      YTService.removeVid(index);
     }
 
     $scope.$watch(function () { return YTService.getTitle() }, function (newVal, oldVal) {

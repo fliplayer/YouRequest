@@ -5,7 +5,6 @@
 		<title>YouRequest</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<link rel="stylesheet" media="screen" href="http://netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 		<link href='https://fonts.googleapis.com/css?family=Quicksand' rel='stylesheet' type='text/css'>
 		<link href='http://fonts.googleapis.com/css?family=Lato:100,300,400,700' rel='stylesheet' type='text/css'>
 		<link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:600' rel='stylesheet' type='text/css'>
@@ -22,7 +21,7 @@
 					<div id="wrap">
 						<form id="search" data-ng-submit="search()">
 							<input id="query" name="q" type="text" placeholder="What are we looking for?" data-ng-model="query" autocomplete="off">
-	        				<input id="search_submit" value="Rechercher" type="submit">
+	        				<input id="search_submit" type="submit">
 						</form>
 					</div>
 				</header>
@@ -33,15 +32,22 @@
 					<div class="row">
 						<div class="col-md-12" id="player">
 							<div id="placeholder" style="width: 100%"></div>
-							<div id="currvideotitle"><span>{{videotitle}}</span></div>
+							<div id="currvideotitle">
+								<span>{{videotitle}}</span><button class="btn" data-ng-click="clearList()">Clear</button>
+							</div>
 							<hr>
 						</div>
 					</div>
 					<div class="row">
 						<div class="col-md-12">
-							<div id="playlist">
-								<div id="playlistvideo" data-ng-repeat="video in playlist" data-ng-click="play(video.id, video.title, $index)">
-									<span>{{video.title}}</span>
+							<div id="list">
+								<div id="playlistcontainer" data-ng-repeat="video in playlist">
+									<div id="playlistvideo"  data-ng-click="play(video.id, video.title, $index)">
+										<span>{{video.title}}</span>
+									</div>
+									<div id="remove" data-ng-click="removeVideo($index)">
+										<span><strong>Remove</strong></span>
+									</div>
 								</div>
 							</div>
 						</div>
