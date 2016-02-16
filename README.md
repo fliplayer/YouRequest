@@ -8,3 +8,5 @@ The basic idea is to allow streamers to make a quick Youtube playlist based on t
 	* Search for a video
 	* Click on the desired video in order to add to playlist
 
+Original Idea from https://github.com/jgthms/juketube
+

@@ -16,12 +16,14 @@ app.service('YTService', ['$window', '$rootScope', '$log', function ($window, $r
 	    playerId: null,
 	    videoId: null,
 	    videoTitle: null,
-	    playerHeight: '480',
+	    playerHeight: '422',
 	    playerWidth: '640',
 	    state: 'stopped'
     };
 	var results = [];
 	var playlist = [];
+  var currTitle = '[MV] 여자친구(GFRIEND) _ 시간을 달려서(Rough)';
+  var counter = -1;
 
   $window.onYouTubeIframeAPIReady = function () {
     $log.info('Youtube API is ready');
@@ -45,8 +47,12 @@ app.service('YTService', ['$window', '$rootScope', '$log', function ($window, $r
       youtube.state = 'paused';
     } else if (event.data == YT.PlayerState.ENDED) {
       youtube.state = 'ended';
-      service.launchPlayer(playlist[0].id, playlist[0].title);
-      service.deleteVideo(playlist, playlist[0].id);
+      counter++;
+      if(counter < playlist.length) {
+        service.launchPlayer(playlist[counter].id, playlist[counter].title, counter);
+        $rootScope.videotitle = YTService.getTitle();
+      }
+      
     }
     $rootScope.$apply();
   }
@@ -80,10 +86,12 @@ app.service('YTService', ['$window', '$rootScope', '$log', function ($window, $r
     }
   };
 
-  this.launchPlayer = function (id, title) {
+  this.launchPlayer = function (id, title, index) {
     youtube.player.loadVideoById(id);
     youtube.videoId = id;
     youtube.videoTitle = title;
+    currTitle = title;
+    counter = index;
     return youtube;
   }
 
@@ -120,6 +128,10 @@ app.service('YTService', ['$window', '$rootScope', '$log', function ($window, $r
   this.getPlaylist = function() {
     return playlist;
   };
+
+  this.getTitle = function() {
+    return currTitle;
+  };
 }]);
 
 app.controller('YRCtrl', function ($scope, $http, $log, YTService) {
@@ -129,6 +141,7 @@ app.controller('YRCtrl', function ($scope, $http, $log, YTService) {
       $scope.youtube = YTService.getYoutube();
       $scope.results = YTService.getResults();
       $scope.playlist = YTService.getPlaylist();
+      $scope.videotitle = YTService.getTitle();
     }
 
     $scope.search = function () {
@@ -155,8 +168,15 @@ app.controller('YRCtrl', function ($scope, $http, $log, YTService) {
       YTService.addToPlaylist(id,title);
     }
 
-    $scope.play = function(id, title) {
-      YTService.launchPlayer(id, title);
+    $scope.play = function(id, title, index) {
+      YTService.launchPlayer(id, title, index);
+      $scope.videotitle = YTService.getTitle();
     }
+
+    $scope.$watch(function () { return YTService.getTitle() }, function (newVal, oldVal) {
+    if (typeof newVal !== 'undefined') {
+        $scope.videotitle = YTService.getTitle();
+    }
+});
 
 });
