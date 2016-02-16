@@ -18,7 +18,7 @@
 				</div>
 			</div>
 			<div class="row">
-				<div class="col-md-6">
+				<div class="col-md-8">
 					<div class="row">
 						<div class="col-md-12" id="player">
 							<div id="placeholder" style="width: 100%"></div>
@@ -26,11 +26,13 @@
 					</div>
 					<div class="row">
 						<div class="col-md-12">
-							sd
+							<div id="playlist" data-ng-repeat="video in playlist" data-ng-click="play(video.id, video.title)">
+								<p>{{video.title}}<p>
+							</div>
 						</div>
 					</div>
 				</div>
-				<div class="col-md-6">
+				<div class="col-md-4">
 					<div class="video" data-ng-repeat="video in results" data-ng-click="queue(video.id, video.title)">
 				        <img class="video-image" data-ng-src="{{ video.thumbnail }}">
 				        <p class="video-title">{{ video.title }}</p>
